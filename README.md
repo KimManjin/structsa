@@ -1,6 +1,6 @@
 # Project Page of "Learning Correlation Structures for Vision Transformers" (CVPR'24)
 
-This repository contains additonal results and website source files for [StructViT Project](https://KimManjin.github.io/StructViT/).
+This repository contains additonal results and website source files for [StructViT Project](https://kimmanjin.github.io/structsa/).
 
 ```bib
 @inproceedings{kim2024learning,
