@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<meta property="og:url" content="https://github.com/KimManjin/structsa/">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Learning correlation structures for vision transformers">
+  <meta name="keywords" content="Vision Transformers, correlation structures, visual representation learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Correlation Structures for Vision Transformers</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="shortcut icon" href="/lab/favicons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="57x57" href="/lab/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/lab/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/lab/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/lab/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/lab/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/lab/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/lab/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/lab/favicons/apple-touch-icon-152x152.png">
+  <link rel="icon" type="image/png" href="/lab/favicons/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="/lab/favicons/favicon-160x160.png" sizes="160x160">
+  <link rel="icon" type="image/png" href="/lab/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/lab/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/lab/favicons/favicon-32x32.png" sizes="32x32">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript"
+    src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://keunhong.com">
+        <span class="icon">
+            <i class="fas fa-home"></i>
+        </span>
+        </a>
+  
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="http://cvlab.postech.ac.kr/research/MotionSqueeze/">
+              MotionSqueeze
+            </a>
+            <a class="navbar-item" href="http://cvlab.postech.ac.kr/research/SELFY/">
+              SELFYNet
+            </a>
+            <a class="navbar-item" href="http://cvlab.postech.ac.kr/research/RSA/">
+              Relational Self Attention
+            </a>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Learning Correlation Structures for Vision Transformers</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://kimmanjin.github.io/">Manjin Kim</a><sup>1</sup>,&ensp;</span>
+            <span class="author-block">
+              <a href="https://phseo.github.io/">Paul Hongsuck Seo</a><sup>2</sup><sup>&#8224;</sup>,&ensp;</span>
+            <span class="author-block">
+              <a href="https://research.google/people/cordelia-schmid/">Cordelia Schmid</a><sup>3</sup>,&ensp;
+            </span>
+            <span class="author-block">
+              <a href="http://cvlab.postech.ac.kr/~mcho/">Minsu Cho</a><sup>1</sup><sup>&#8224;</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>POSTECH,&ensp;</span>
+            <span class="author-block"><sup>2</sup>Korea University,&ensp;</span>
+            <span class="author-block"><sup>3</sup>Google Research</span>
+          </div>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>&#8224;</sup>Equal contribution</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2404.03924.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- arXiv Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2404.03924"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/KimManjin/StructViT"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+              <!-- Bib Link. -->
+              <span class="link-block">
+                <a href="https://github.com/KimManjin/structsa/#bibtex" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-obp"></i>
+                  </span>
+                  <span>BibTex</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="hero">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/structsa.jpg"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+      <h2 class="subtitle has-text-centered">
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We introduce a new attention mechanism, dubbed structural self-attention (StructSA),
+            that leverages rich correlation patterns naturally emerging in key-query interactions of attention.
+            StructSA generates attention maps by recognizing space-time structures of key-query correlations via
+            convolution and uses them to dynamically aggregate local contexts of value features. This effectively
+            leverages rich structural patterns in images and videos such as scene layouts, object motion, and
+            inter-object relations. Using StructSA as a main building block, we develop the structural vision
+            transformer (StructViT) and evaluate its effectiveness on both image and video classification tasks,
+            achieving state-of-the-art results on ImageNet-1K, Kinetics-400, Something-Something V1 \& V2,
+            Diving-48, and FineGym.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Overall Architecture. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Structural Self-Attention (StructSA)</h2>
+
+        <!-- Interpolating. -->
+        <!-- <h3 class="title is-4">Interpolating states</h3> -->
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column is-14 has-text-centered">
+            <img src="./static/images/teaser.png"/>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Given an input video and a query indicated by the red box in (a), the query-key correlation maps in (b)
+            clearly reveal the structures of spatial layout and motion with respect to the query.
+            We here introduce a novel self-attention mechanism, named <em>structural self-attention</em> (StructSA), in (c)
+            that effectively incorporates rich structural patterns of query-key correlation into  contextual feature aggregation.
+            The StructSA mechanism consists of two steps: (i) structural query-key attention and (ii) contextual value aggregation. 
+            Unlike the vanilla query-key attention where individual correlation values themselves are used as attention scores,
+            the structural query-key attention takes the correlation map as a whole and detect structural patterns from it in attention scoring.
+            The subsequent contextual value aggregation then combines the attention scores together to compute diverse sets of kernel weights
+            that are used for dynamically collecting local contexts of value features.  
+          </p>
+        </div>
+        <!-- <br/> -->
+        <!--/ Interpolating. -->
+
+      </div>
+    </div>
+    
+    <!--/ Experimental Results. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Experimental Results</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h4 class="title is-4">Image Understanding</h4>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <h5 class="title is-5">ImageNet-1K</h5>
+        <img src="./static/images/in1k.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+        <p>
+          *Trained with Token Labeling.
+        </p>
+      </div>
+
+      <div class="column is-6">
+        <h3 class="title is-5">MS COCO</h3>
+        <img src="./static/images/coco.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+        <p>
+          AP$^\textrm{b}$ and AP$^\textrm{m}$ indicates box mAP and mask mAP, respectively. We measure FLOPs at $800\times1280$ resolution.
+        </p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h3 class="title is-5">ADE20K</h3>
+        <img src="./static/images/ade20k.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+        <p>
+        We measure FLOPs using $512 \times 2048$ resolution images.
+        </p>
+
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Video Understanding</h3>
+      </div>
+    </div>
+    
+    <div class="columns is-centered">
+      <div class="column">
+        <h3 class="title is-5">Kinetics-400</h3>
+        <img src="./static/images/k400.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+      </div>
+
+      <div class="column is-7">
+        <h3 class="title is-5">Something-Something</h3>
+        <img src="./static/images/ss.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-4">Ablation Study</h2>
+          <img src="./static/images/ablation_tables.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          <p>
+            Effects of the structure dimension <i>D</i> (Left), kernel size <i>M</i> (center), and contextual
+            aggregation (right) on ImageNet-1K and Something-Something-V1. 
+          </p>
+        </div>
+      </div>
+    </div> 
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Qualitative Results</h3>
+        <p>
+        <h3 class="title is-5">Attention map visualization of SA, ConvSA, and StructSA</h3>
+        <!-- <b>Attention map visualization of SA, ConvSA, and StructSA</b> -->
+        </p>
+        <img src="./static/images/qual1.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+        <p>
+          The query location $i$ is set to the center of the image and the kernel size $M=3 \times 3$.
+        Given (a) input images, we illustrate (b) attention maps of SA, (c) dynamic kernels 
+        </bm>$\kappa$</bm>$^{\mathrm{conv}}_{i,j}$, (d) final attention maps of ConvSA, \ie, aggregated weights 
+        of </bm>$\kappa$</bm>$^{\mathrm{conv}}_{i,j}$, (e) dynamic kernels </bm>$\kappa$</bm>$^{\mathrm{struct}}_{i,j}$, 
+        and (f) final attention maps of StructSA, i.e., aggregated weights of </bm>$\kappa$</bm>$^{\mathrm{struct}}_{i,j}$, respectively.
+        Note that in (c) and (e), each location $j$ has an aggregation map of the kernel size $M=3 \times 3$ 
+        and thus we show enlarged images for three different sampled locations $j$.
+        The figures demonstrate that StructSA contextualizes the entire features in a structure-aware manner considering objects’ layouts or shapes;
+          for instance, StructSA aggregates global contexts distinguishing different parts of an orange (2nd row) or an ostrich (3rd row)
+        </p>
+        <br><br>
+        <p>
+          <h3 class="title is-5">Kernel visualization of spatio-temporal StructSA</h3>
+          <!-- <b>Kernel visualization of spatio-temporal StructSA</b> -->
+          </p>
+          <img src="./static/images/qual2.png"
+                   class="interpolation-image"
+                   alt="Interpolate start reference image."/>
+          <p> 
+            The top row shows the input frames that contain the input spatiotemporal local context (indicated by green boxes) used in the dynamic kernel computation.
+            The bottom row presents the resulting dynamic kernels <bm></bm>$\kappa$</bm>$^{\mathrm{struct}}_{i,j}$ for a StructSA head when $i=j$.
+            Note that the computed dynamic kernels are computed with self-similarity map ($i=j$) to illustrate its effectiveness in capturing motions in videos.
+            We use StructViT-S-4-1 with $M=5 \times 5 \times 5$.
+          </p>
+      </div>
+    </div>
+    
+    <!--/ Matting. -->
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title"><a id="bibtex">BibTeX</a></h2>
+    <pre><code>@inproceedings{kim2024learning,
+      title={Learning Correlation Structures for Vision Transformers},
+      author={Kim, Manjin and Seo, Paul Hongsuck and Schmid, Cordelia and Cho, Minsu},
+      journal={Proceedings of the IEEE conference on computer vision and pattern recognition},
+      year={2024},
+      }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="columns is-centered">
+    <div class="column is-8">
+      <div class="content">
+        <p>
+          This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+          Commons Attribution-ShareAlike 4.0 International License</a>.
+        </p>
+        <p>
+          Website adapted from the following <a href="https://github.com/nerfies/nerfies.github.io">source code</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
